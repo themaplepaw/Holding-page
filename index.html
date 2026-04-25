@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ConnectPaw — Don't guess. Get guidance first.</title>
 <meta name="description" content="Singapore's pet telehealth platform — connecting worried pet parents with qualified vet professionals and AVS-licensed vet doctors over live video. Launching August 2026.">
+<meta name="author" content="ConnectPaw by TheMaplePaw Pte Ltd">
 <meta property="og:title" content="ConnectPaw — A vet when it matters.">
 <meta property="og:description" content="Real vet guidance, via live video, in minutes. Built for Singapore. Launching August 2026.">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,21 +17,24 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Brand palette (per ConnectPaw Brand Identity v2) */
-    --primary: #41644A;          /* Forest Green */
-    --primary-dark: #0D4715;     /* Deep Forest */
-    --primary-light: #E8F3EB;    /* Light Green Tint */
-    --accent: #E9762B;           /* Pumpkin Orange */
+    --primary: #41644A;
+    --primary-dark: #0D4715;
+    --primary-light: #E8F3EB;
+    --accent: #E9762B;
     --accent-dark: #C45F1E;
-    --accent-light: #FFF0E6;     /* Orange Tint */
-    --deep: #0D4715;             /* Primary text */
-    --muted: #6B7A74;            /* Muted Sage — body/captions */
-    --cream: #F7F5F2;            /* Warm Cream — page bg */
-    --white: #FFFFFF;
+    --accent-light: #FFF0E6;
+    --secondary: #0D4715;
+    --secondary-2: #1a5b25;
+    --secondary-fg: #F7F5F2;
+    --deep: #0D4715;
+    --muted: #6B7A74;
+    --cream: #F7F5F2;
+    --card: #FFFFFF;
     --border: rgba(13,71,21,0.12);
     --shadow-soft: 0 2px 20px rgba(13,71,21,0.06);
     --shadow-lift: 0 12px 32px rgba(13,71,21,0.08);
     --shadow-glow: 0 8px 24px rgba(233,118,43,0.35);
+    --gradient-warm: linear-gradient(135deg, #E9762B 0%, #E8501C 100%);
   }
 
   html { scroll-behavior: smooth; }
@@ -42,13 +47,13 @@
     -webkit-font-smoothing: antialiased;
   }
   .display { font-family: 'Playfair Display', serif; }
-  a { color: inherit; }
+  a { color: inherit; text-decoration: none; }
 
   /* Launch banner */
   .launch-banner {
     background: var(--accent-light);
     border-bottom: 1px solid rgba(233,118,43,0.2);
-    padding: 0.65rem 2rem;
+    padding: 10px 32px;
     text-align: center;
     font-size: 0.82rem;
     color: var(--accent-dark);
@@ -56,20 +61,16 @@
   }
 
   /* Nav */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  nav.topnav {
+    position: sticky; top: 0; z-index: 50;
+    padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
     background: rgba(247,245,242,0.9);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; }
-  .nav-logo-icon {
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
     position: relative;
     width: 40px; height: 40px;
     background: var(--primary);
@@ -78,622 +79,518 @@
     font-size: 18px;
     box-shadow: var(--shadow-soft);
   }
-  .nav-logo-icon::after {
+  .logo-icon::after {
     content: ''; position: absolute; top: -2px; right: -2px;
-    width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
-    border: 2px solid var(--cream);
+    width: 10px; height: 10px; background: var(--accent);
+    border-radius: 50%; box-shadow: 0 0 0 2px var(--cream);
   }
-  .nav-logo-text {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700; font-size: 1.1rem; line-height: 1.1;
+  .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; line-height: 1.1; }
+  .logo-text .a { color: var(--secondary); }
+  .logo-text .b { color: var(--primary); }
+  .logo-sub { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; cursor: pointer; border: none;
+    transition: all 0.2s; text-decoration: none;
   }
-  .nav-logo-text .connect { color: var(--deep); }
-  .nav-logo-text .paw { color: var(--primary); }
-  .nav-logo-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem; font-weight: 400; color: var(--muted);
-    display: block; letter-spacing: 0.05em; text-transform: uppercase;
+  .btn-accent { background: var(--accent); color: #fff; }
+  .btn-accent:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+  .btn-outline {
+    border: 1.5px solid var(--secondary); color: var(--secondary); background: transparent;
   }
-  .nav-cta {
-    background: var(--accent); color: var(--white); border: none;
-    padding: 0.55rem 1.25rem; border-radius: 50px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .nav-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-outline:hover { background: var(--secondary); color: var(--secondary-fg); }
+  .btn-nav { padding: 8px 20px; font-size: 0.875rem; }
 
   /* Hero */
   .hero {
-    padding: 5rem 2rem;
+    padding: 80px 32px;
     max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-    align-items: center; min-height: 80vh;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    align-items: center; min-height: 85vh;
   }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 0.4rem;
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
     background: var(--primary-light); color: var(--primary-dark);
     font-size: 0.75rem; font-weight: 600;
-    padding: 0.35rem 0.9rem; border-radius: 50px;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px;
   }
-  .hero-badge::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--primary); border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.3); }
-  }
-  .hero h1 {
+  .pill-dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; animation: pulse-dot 2s infinite; }
+  h1.hero-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2.4rem, 4.5vw, 3.5rem);
-    font-weight: 900; line-height: 1.1; color: var(--deep);
-    margin-bottom: 1.25rem;
+    font-weight: 900; line-height: 1.1; color: var(--secondary);
+    margin-bottom: 20px;
   }
-  .hero h1 em { font-style: normal; color: var(--primary); }
-  .hero-tag {
+  h1.hero-title em { font-style: normal; color: var(--primary); }
+  .tagline {
     font-family: 'Playfair Display', serif;
-    font-size: 1.35rem; color: var(--primary); font-weight: 700;
-    margin-bottom: 1.5rem;
+    font-size: 1.35rem; color: var(--primary); font-weight: 700; margin-bottom: 24px;
   }
-  .hero-desc {
-    font-size: 1.05rem; color: var(--muted);
-    line-height: 1.75; margin-bottom: 2.5rem; max-width: 480px;
-  }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
-  .btn-primary {
-    background: var(--accent); color: var(--white); border: none;
-    padding: 0.875rem 2rem; border-radius: 50px;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
-    cursor: pointer; text-decoration: none;
-    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
-  }
-  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
-  .btn-outline {
-    background: transparent; color: var(--deep);
-    border: 1.5px solid var(--deep);
-    padding: 0.875rem 2rem; border-radius: 50px;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500;
-    cursor: pointer; text-decoration: none;
-    transition: all 0.2s; display: inline-block;
-  }
-  .btn-outline:hover { background: var(--deep); color: var(--white); }
+  .hero-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.75; margin-bottom: 40px; max-width: 480px; }
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
 
-  .hero-visual { display: flex; justify-content: center; align-items: center; }
+  .hero-card-wrap { display: flex; justify-content: center; align-items: center; }
   .hero-card-stack { position: relative; width: 320px; }
   .hero-card {
-    background: var(--white); border-radius: 20px;
-    padding: 1.5rem; border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft); position: relative; z-index: 2;
+    background: var(--card); border-radius: 20px; padding: 24px;
+    border: 1px solid var(--border); box-shadow: var(--shadow-soft);
+    position: relative; z-index: 10;
   }
-  .float-card {
-    position: absolute; bottom: -1.5rem; right: -2rem;
-    width: 200px; z-index: 3;
-    background: var(--deep); color: var(--white);
-    padding: 1rem 1.25rem; border-radius: 20px;
-    box-shadow: var(--shadow-lift);
+  .vet-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .vet-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .vet-name { font-size: 0.875rem; font-weight: 600; color: var(--secondary); }
+  .vet-status { font-size: 0.75rem; color: var(--muted); }
+  .badge-licensed { display: inline-block; background: var(--primary-light); color: var(--primary-dark); font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+  .vet-msg { font-size: 0.85rem; color: var(--secondary); line-height: 1.5; padding: 12px; background: var(--cream); border-radius: 10px; margin-bottom: 12px; }
+  .vet-rec { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--primary); }
+  .vet-rec .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+  .hero-stat {
+    position: absolute; bottom: -24px; right: -32px; width: 200px; z-index: 20;
+    background: var(--secondary); color: var(--secondary-fg); padding: 16px 20px;
+    border-radius: 20px; box-shadow: var(--shadow-lift);
   }
-  .card-avatar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-  .avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--primary-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; flex-shrink: 0;
-  }
-  .avatar-info p { font-size: 0.875rem; font-weight: 600; color: var(--deep); }
-  .avatar-info span { font-size: 0.75rem; color: var(--muted); }
-  .vet-badge {
-    display: inline-block; background: var(--primary-light); color: var(--primary-dark);
-    font-size: 0.7rem; font-weight: 600;
-    padding: 0.2rem 0.6rem; border-radius: 50px; margin-bottom: 0.75rem;
-  }
-  .card-msg {
-    font-size: 0.85rem; color: var(--deep); line-height: 1.5;
-    padding: 0.75rem; background: var(--cream); border-radius: 10px;
-    margin-bottom: 0.75rem;
-  }
-  .card-verdict {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.8rem; font-weight: 600; color: var(--primary);
-  }
-  .verdict-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
-  .float-card-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem; }
-  .float-card-stat { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.2rem; }
-  .float-card-desc { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+  .hero-stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(247,245,242,0.6); margin-bottom: 4px; }
+  .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 2px; }
+  .hero-stat-sub { font-size: 0.75rem; color: rgba(247,245,242,0.7); }
 
   /* Trust bar */
   .trust-bar {
-    background: var(--deep);
-    padding: 1.25rem 2rem;
-    display: flex; align-items: center; justify-content: center;
-    gap: 3rem; flex-wrap: wrap;
+    background: var(--secondary); padding: 20px 32px;
+    display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap;
+    color: rgba(247,245,242,0.75); font-size: 0.85rem;
   }
-  .trust-item { display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.78); font-size: 0.85rem; }
-  .trust-icon { color: var(--primary); font-size: 1rem; line-height: 1; }
-  .trust-bar .trust-icon { color: #84B989; }
+  .trust-item { display: flex; align-items: center; gap: 8px; }
+  .trust-item svg { color: var(--primary); width: 16px; height: 16px; }
 
-  /* Section */
-  .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
-  .section-label {
-    font-size: 0.75rem; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--primary); margin-bottom: 0.75rem;
-  }
-  .section-title {
+  /* Sections */
+  section { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+  .eyebrow.on-dark { color: var(--accent); }
+  h2.section-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.8rem, 3.5vw, 2.75rem);
-    font-weight: 700; color: var(--deep); line-height: 1.2;
-    margin-bottom: 1rem;
+    font-weight: 700; line-height: 1.15; color: var(--secondary);
+    margin-bottom: 16px; max-width: 720px;
   }
-  .section-subtitle {
-    font-size: 1rem; color: var(--muted);
-    max-width: 600px; line-height: 1.7; margin-bottom: 3.5rem;
-  }
+  h2.on-dark { color: var(--secondary-fg); }
+  .lead { font-size: 1rem; color: var(--muted); max-width: 620px; line-height: 1.7; margin-bottom: 56px; }
+  .lead.on-dark { color: rgba(247,245,242,0.6); }
 
-  /* Problem grid */
-  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .problem-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2rem;
-    box-shadow: var(--shadow-soft);
+  .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px; box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
   }
-  .problem-icon-wrap {
-    width: 48px; height: 48px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.25rem; font-size: 1.4rem;
+  .card-hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .icon-tile {
+    width: 48px; height: 48px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
   }
-  .problem-icon-wrap.warm { background: var(--accent-light); color: var(--accent-dark); }
-  .problem-icon-wrap.cool { background: var(--primary-light); color: var(--primary); }
-  .problem-card h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem; font-weight: 700; color: var(--deep);
-    margin-bottom: 0.75rem;
-  }
-  .problem-card p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
+  .icon-tile svg { width: 24px; height: 24px; }
+  .card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--secondary); margin-bottom: 12px; }
+  .card p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
 
   /* Brand promise */
   .promise {
-    margin-top: 3.5rem;
-    background: var(--deep); color: var(--white);
-    border-radius: 24px; padding: 3rem 2rem;
-    text-align: center; position: relative; overflow: hidden;
+    margin-top: 56px;
+    background: var(--secondary); color: var(--secondary-fg);
+    border-radius: 24px; padding: 56px 40px; text-align: center;
+    position: relative; overflow: hidden;
   }
-  .promise-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
-  .promise-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 700; line-height: 1.25; max-width: 680px; margin: 0 auto; }
-  .promise-sub { color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-top: 1.25rem; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .promise-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
+  .promise-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; line-height: 1.2; max-width: 680px; margin: 0 auto; }
+  .promise-sub { color: rgba(247,245,242,0.7); font-size: 0.875rem; margin-top: 20px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.7; }
 
   /* Steps */
-  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .step-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2rem 1.75rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
-  .step-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem; font-weight: 900;
-    color: var(--primary-light); line-height: 1;
-    margin-bottom: 1rem; display: block;
-  }
-  .step-icon { font-size: 1.6rem; margin-bottom: 1rem; display: block; }
-  .step-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--deep); margin-bottom: 0.5rem; }
-  .step-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--primary-light); line-height: 1; display: block; margin-bottom: 16px; }
+  .step .icon-tile { background: transparent; width: auto; height: auto; margin-bottom: 16px; }
+  .step .icon-tile svg { color: var(--primary); width: 28px; height: 28px; }
+  .step h3 { font-size: 1.05rem; font-family: 'DM Sans', sans-serif; font-weight: 600; margin-bottom: 8px; }
+  .step p { font-size: 0.875rem; }
 
-  /* Offer / two layers */
-  .offer-section { background: var(--deep); padding: 5rem 2rem; }
-  .offer-inner { max-width: 1100px; margin: 0 auto; }
-  .offer-section .section-label { color: var(--accent); }
-  .offer-section .section-title { color: var(--white); }
-  .offer-section .section-subtitle { color: rgba(255,255,255,0.6); }
-  .offer-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .offer-card {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px; padding: 2rem; transition: background 0.2s;
+  /* Two layers (dark) */
+  .dark-section { background: var(--secondary); padding: 80px 32px; }
+  .dark-inner { max-width: 1100px; margin: 0 auto; }
+  .layer-card {
+    background: rgba(247,245,242,0.05); border: 1px solid rgba(247,245,242,0.1);
+    border-radius: 20px; padding: 32px;
+    transition: background 0.3s;
   }
-  .offer-card:hover { background: rgba(255,255,255,0.09); }
-  .offer-tag {
-    display: inline-block; background: rgba(233,118,43,0.2); color: var(--accent);
-    font-size: 0.7rem; font-weight: 600;
-    padding: 0.3rem 0.75rem; border-radius: 50px;
-    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;
-  }
-  .offer-card h3 { font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem; }
-  .offer-card p { font-size: 0.875rem; color: rgba(255,255,255,0.65); line-height: 1.7; }
-  .offer-features { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.55rem; }
-  .offer-feature {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-size: 0.82rem; color: rgba(255,255,255,0.78);
-  }
-  .offer-feature::before {
-    content: ''; width: 18px; height: 18px; border-radius: 50%;
-    background: rgba(65,100,74,0.4); flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%2384B989' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: center;
-  }
+  .layer-card:hover { background: rgba(247,245,242,0.1); }
+  .layer-tag { display: inline-block; background: rgba(233,118,43,0.2); color: var(--accent); font-size: 0.7rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .layer-card h3 { font-size: 1.15rem; font-weight: 600; color: var(--secondary-fg); margin-bottom: 12px; }
+  .layer-card > p { font-size: 0.875rem; color: rgba(247,245,242,0.6); line-height: 1.7; }
+  .features { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .feature { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: rgba(247,245,242,0.75); }
+  .feature .tick { width: 16px; height: 16px; border-radius: 50%; background: rgba(65,100,74,0.3); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 0.6rem; flex-shrink: 0; }
 
   /* Audience */
-  .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .audience-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 20px; padding: 1.75rem;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .audience-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
-  .audience-emoji { font-size: 2rem; margin-bottom: 1rem; }
-  .audience-age { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); font-weight: 600; margin-bottom: 0.4rem; }
-  .audience-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--deep); margin-bottom: 0.5rem; }
-  .audience-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+  .audience-card { padding: 28px; }
+  .audience-card .emoji { font-size: 1.875rem; margin-bottom: 16px; }
+  .audience-age { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 4px; }
+  .audience-card h3 { font-size: 1.125rem; }
 
   /* FAQ */
-  .faq-section { padding: 5rem 2rem; max-width: 780px; margin: 0 auto; }
-  .faq-item { border-bottom: 1px solid var(--border); padding: 1.25rem 0; }
-  .faq-q {
-    font-size: 0.95rem; font-weight: 500; color: var(--deep);
-    cursor: pointer; display: flex; justify-content: space-between;
-    align-items: center; gap: 1rem; list-style: none; user-select: none;
-  }
-  .faq-q::-webkit-details-marker { display: none; }
-  .faq-q::after {
-    content: '+'; font-size: 1.4rem; color: var(--primary);
-    font-weight: 300; flex-shrink: 0; transition: transform 0.2s;
-  }
-  details[open] .faq-q::after { transform: rotate(45deg); }
-  .faq-a { font-size: 0.875rem; color: var(--muted); line-height: 1.75; padding-top: 0.75rem; }
+  .faq-section { max-width: 780px; padding: 80px 32px; margin: 0 auto; }
+  details { border-bottom: 1px solid var(--border); padding: 20px 0; }
+  summary { font-size: 0.95rem; font-weight: 500; color: var(--secondary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  .plus { font-size: 1.5rem; color: var(--primary); font-weight: 300; transition: transform 0.2s; flex-shrink: 0; }
+  details[open] .plus { transform: rotate(45deg); }
+  details p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; padding-top: 12px; }
 
-  /* Waitlist */
+  /* Waitlist (warm) */
   .waitlist-section {
-    background: linear-gradient(135deg, var(--accent) 0%, #D85420 100%);
-    padding: 5rem 2rem; text-align: center;
+    background: var(--gradient-warm); padding: 80px 32px; text-align: center;
   }
   .waitlist-inner { max-width: 640px; margin: 0 auto; }
   .waitlist-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 900; color: var(--white);
-    margin-bottom: 1rem; line-height: 1.2;
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(2rem,4vw,2.75rem); color: #fff; margin-bottom: 16px; line-height: 1.15;
   }
-  .waitlist-section > .waitlist-inner > p { color: rgba(255,255,255,0.9); font-size: 1rem; margin-bottom: 2rem; line-height: 1.65; }
-  .waitlist-form { display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto 1rem; }
+  .waitlist-section .desc { color: rgba(255,255,255,0.9); font-size: 1rem; margin-bottom: 32px; line-height: 1.65; }
+  .waitlist-form { display: flex; gap: 12px; max-width: 440px; margin: 0 auto 16px; }
   .waitlist-form input {
-    flex: 1; padding: 0.875rem 1.25rem;
-    border: none; border-radius: 50px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-    outline: none; color: var(--deep); background: var(--white);
+    flex: 1; padding: 14px 20px; border-radius: 999px; border: none;
+    font-size: 0.95rem; color: var(--secondary); outline: none;
+    font-family: inherit;
   }
   .waitlist-form button {
-    background: var(--deep); color: var(--white); border: none;
-    padding: 0.875rem 1.5rem; border-radius: 50px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
-    cursor: pointer; white-space: nowrap; transition: background 0.2s;
+    background: var(--secondary); color: var(--secondary-fg);
+    padding: 14px 24px; border-radius: 999px; border: none;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+    transition: background 0.2s;
   }
-  .waitlist-form button:hover { background: #062E0A; }
-  .waitlist-note { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
-  .success-msg {
-    display: none;
+  .waitlist-form button:hover { background: var(--secondary-2); }
+  .waitlist-fine { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
+  .success {
     background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 12px; padding: 1rem 1.5rem; color: var(--white);
-    font-size: 0.9rem; margin-top: 1rem;
+    border-radius: 12px; padding: 16px 24px; color: #fff; font-size: 0.9rem;
+    margin: 16px auto 0; max-width: 440px; display: none;
   }
-  .success-msg.show { display: block; }
+  .success.show { display: block; }
 
   /* Vet recruitment */
-  .vet-section { background: var(--white); padding: 5rem 2rem; }
-  .vet-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
-  }
-  .vet-perks { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
-  .vet-perk { display: flex; gap: 1rem; align-items: flex-start; }
-  .vet-perk-icon {
-    width: 42px; height: 42px; border-radius: 12px;
-    background: var(--primary-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; flex-shrink: 0;
-  }
-  .vet-perk-text h4 { font-size: 0.9rem; font-weight: 600; color: var(--deep); margin-bottom: 0.25rem; }
-  .vet-perk-text p { font-size: 0.825rem; color: var(--muted); line-height: 1.6; }
-  .vet-cta-box {
+  .vet-section { background: var(--card); padding: 80px 32px; }
+  .vet-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .perks { display: flex; flex-direction: column; gap: 20px; }
+  .perk { display: flex; gap: 16px; align-items: flex-start; }
+  .perk-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .perk-icon svg { width: 20px; height: 20px; color: var(--primary); }
+  .perk h4 { font-size: 0.9rem; font-weight: 600; color: var(--secondary); margin-bottom: 4px; }
+  .perk p { font-size: 0.825rem; color: var(--muted); line-height: 1.6; }
+
+  .vet-form-card {
     background: var(--cream); border: 1px solid var(--border);
-    border-radius: 24px; padding: 2.5rem; text-align: center;
+    border-radius: 24px; padding: 40px; text-align: center;
   }
-  .vet-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
-  .vet-cta-box h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--deep); margin-bottom: 0.75rem; }
-  .vet-cta-box > p { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.65; }
-  .vet-form { display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
+  .vet-form-card .icon { font-size: 3rem; margin-bottom: 16px; }
+  .vet-form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 12px; }
+  .vet-form-card > p { font-size: 0.875rem; color: var(--muted); margin-bottom: 28px; line-height: 1.65; }
+  .vet-form { display: flex; flex-direction: column; gap: 12px; text-align: left; }
   .vet-form input, .vet-form select {
-    padding: 0.8rem 1rem;
-    border: 1.5px solid var(--border); border-radius: 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-    color: var(--deep); background: var(--white);
-    outline: none; transition: border-color 0.2s;
+    padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 12px;
+    font-size: 0.9rem; color: var(--secondary); background: var(--card);
+    outline: none; font-family: inherit; transition: border-color 0.2s;
   }
   .vet-form input:focus, .vet-form select:focus { border-color: var(--primary); }
   .vet-form button {
-    background: var(--primary); color: var(--white); border: none;
-    padding: 0.875rem; border-radius: 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
-    cursor: pointer; transition: background 0.2s;
+    background: var(--primary); color: #fff; padding: 14px;
+    border-radius: 12px; border: none; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s; font-family: inherit;
   }
   .vet-form button:hover { background: var(--primary-dark); }
+  .success-sm {
+    background: var(--primary-light); color: var(--primary-dark);
+    border-radius: 12px; padding: 12px 16px; font-size: 0.875rem;
+    margin-top: 16px; display: none;
+  }
+  .success-sm.show { display: block; }
 
   /* Footer */
-  footer { background: var(--deep); color: rgba(255,255,255,0.6); padding: 3rem 2rem; }
+  footer {
+    background: var(--secondary); color: rgba(247,245,242,0.6);
+    padding: 48px 32px;
+  }
   .footer-inner {
     max-width: 1100px; margin: 0 auto;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1.5rem; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center;
   }
   .footer-logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.25rem; }
-  .footer-logo .connect { color: var(--white); }
-  .footer-logo .paw { color: var(--accent); }
-  .footer-tagline { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
-  .footer-tagline a { color: rgba(255,255,255,0.7); text-decoration: none; }
-  .footer-tagline a:hover { color: var(--white); }
-  .footer-promise { font-size: 0.85rem; color: rgba(255,255,255,0.5); font-style: italic; max-width: 480px; }
-  .social-links { display: flex; gap: 0.75rem; align-items: center; }
+  .footer-logo .a { color: var(--secondary-fg); }
+  .footer-logo .b { color: var(--accent); }
+  .footer-meta { font-size: 0.8rem; color: rgba(247,245,242,0.4); margin-top: 4px; }
+  .footer-meta a { color: rgba(247,245,242,0.7); }
+  .footer-meta a:hover { color: var(--secondary-fg); }
+  .footer-quote { font-size: 0.85rem; color: rgba(247,245,242,0.5); max-width: 480px; font-style: italic; }
+  .socials { display: flex; gap: 12px; }
   .social-link {
     width: 40px; height: 40px; border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(247,245,242,0.15);
     display: flex; align-items: center; justify-content: center;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s;
-    color: rgba(255,255,255,0.7);
+    color: rgba(247,245,242,0.7); transition: all 0.2s;
   }
-  .social-link:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: var(--white); }
-  .social-link svg { width: 18px; height: 18px; fill: currentColor; }
-  .footer-bottom { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+  .social-link:hover { background: rgba(247,245,242,0.1); border-color: rgba(247,245,242,0.3); color: var(--secondary-fg); }
+  .social-link svg { width: 18px; height: 18px; }
+  .footer-copy { font-size: 0.75rem; color: rgba(247,245,242,0.3); }
 
   /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero > * { animation: fadeUp 0.6s ease both; }
-  .hero > *:nth-child(2) { animation-delay: 0.15s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+  .fade-up { animation: fadeUp 0.6s ease both; }
 
   /* Responsive */
-  @media (max-width: 768px) {
-    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3.5rem 1.5rem; min-height: auto; }
-    .hero-visual { display: none; }
-    .steps-grid, .problem-grid, .offer-cards, .audience-grid { grid-template-columns: 1fr; }
-    .vet-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .trust-bar { gap: 1.5rem; }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding: 48px 24px; gap: 48px; min-height: auto; }
+    .hero-card-wrap { display: none; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .vet-inner { grid-template-columns: 1fr; gap: 40px; }
+    section, .dark-section, .vet-section, .waitlist-section { padding: 56px 24px; }
+    .trust-bar { gap: 20px; padding: 16px 24px; }
     .waitlist-form { flex-direction: column; }
-    nav { padding: 1rem 1.25rem; }
-    .section, .faq-section, .vet-section, .offer-section, .waitlist-section { padding: 3.5rem 1.5rem; }
-    .promise { padding: 2.5rem 1.5rem; }
+    nav.topnav { padding: 14px 20px; }
+    .promise { padding: 40px 24px; }
   }
 </style>
 </head>
 <body>
 
+<!-- Launch banner -->
 <div class="launch-banner">🐾 We're building. MVP launching August 2026 — join the waitlist and be first in line.</div>
 
-<nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-icon">🐾</div>
+<!-- Nav -->
+<nav class="topnav">
+  <a href="#" class="logo">
+    <div class="logo-icon">🐾</div>
     <div>
-      <div class="nav-logo-text"><span class="connect">Connect</span><span class="paw">Paw</span></div>
-      <span class="nav-logo-sub">by TheMaplePaw</span>
+      <div class="logo-text"><span class="a">Connect</span><span class="b">Paw</span></div>
+      <span class="logo-sub">by TheMaplePaw</span>
     </div>
   </a>
-  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  <a href="#waitlist" class="btn btn-accent btn-nav">Join Waitlist</a>
 </nav>
 
+<!-- Hero -->
 <section class="hero">
-  <div>
-    <div class="hero-badge">Singapore Pet Telehealth · Coming Soon</div>
-    <h1>Don't guess.<br>Get guidance <em>first</em>.</h1>
-    <p class="hero-tag">A vet — when it matters.</p>
+  <div class="fade-up">
+    <div class="pill"><span class="pill-dot"></span>Singapore Pet Telehealth · Coming Soon</div>
+    <h1 class="hero-title">Don't guess.<br>Get guidance <em>first</em>.</h1>
+    <p class="tagline">A vet — when it matters.</p>
     <p class="hero-desc">We're building Singapore's first structured pet telehealth platform — connecting worried pet parents with qualified vet professionals and AVS-licensed vet doctors over live video, in minutes. So you'll always know what to do next.</p>
-    <div class="hero-actions">
-      <a href="#waitlist" class="btn-primary">Join the Waitlist →</a>
-      <a href="#problem" class="btn-outline">Why we're building this</a>
+    <div class="hero-cta">
+      <a href="#waitlist" class="btn btn-accent">Join the Waitlist →</a>
+      <a href="#problem" class="btn btn-outline">Why we're building this</a>
     </div>
   </div>
-  <div class="hero-visual">
+  <div class="hero-card-wrap fade-up" style="animation-delay: 0.15s">
     <div class="hero-card-stack">
       <div class="hero-card">
-        <div class="card-avatar-row">
-          <div class="avatar">🩺</div>
-          <div class="avatar-info">
-            <p>Dr. Sarah Lim, AVS</p>
-            <span>Vet Doctor · Online now</span>
+        <div class="vet-row">
+          <div class="vet-avatar">🩺</div>
+          <div>
+            <p class="vet-name">Dr. Sarah Lim, AVS</p>
+            <span class="vet-status">Vet Doctor · Online now</span>
           </div>
         </div>
-        <div class="vet-badge">✓ AVS Licensed</div>
-        <div class="card-msg">"It might be nothing. Let's make sure. Based on what you've described, Mochi's limping sounds like a soft tissue strain — let me walk you through a quick check."</div>
-        <div class="card-verdict"><span class="verdict-dot"></span>Recommendation: Monitor at home</div>
+        <div class="badge-licensed">✓ AVS Licensed</div>
+        <div class="vet-msg">"It might be nothing. Let's make sure. Based on what you've described, Mochi's limping sounds like a soft tissue strain — let me walk you through a quick check."</div>
+        <div class="vet-rec"><span class="dot"></span>Recommendation: Monitor at home</div>
       </div>
-      <div class="float-card">
-        <div class="float-card-label">Response time</div>
-        <div class="float-card-stat">&lt;15 min</div>
-        <div class="float-card-desc">Average video consult</div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Response time</div>
+        <div class="hero-stat-num">&lt;15 min</div>
+        <div class="hero-stat-sub">Average video consult</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Trust bar -->
 <div class="trust-bar">
-  <div class="trust-item"><span class="trust-icon">✓</span> AVS &amp; Vet Practice Bill compliant</div>
-  <div class="trust-item"><span class="trust-icon">✓</span> Live video — not text chat</div>
-  <div class="trust-item"><span class="trust-icon">✓</span> Lifetime pet medical records</div>
-  <div class="trust-item"><span class="trust-icon">✓</span> Emergency consult fee always waived</div>
+  <div class="trust-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>AVS & Vet Practice Bill compliant</span></div>
+  <div class="trust-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span>Live video — not text chat</span></div>
+  <div class="trust-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Lifetime pet medical records</span></div>
+  <div class="trust-item"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>Emergency consult fee always waived</span></div>
 </div>
 
-<section class="section" id="problem">
-  <div class="section-label">The problem</div>
+<!-- Problem -->
+<section id="problem">
+  <div class="eyebrow">The problem</div>
   <h2 class="section-title">Pet parents in Singapore deserve better than Google at 2am.</h2>
-  <p class="section-subtitle">Right now, when something seems off with your pet, your only options are unhelpful forums or an expensive trip to a clinic that may not even be open. We're solving the two pain points every owner knows too well.</p>
-
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="problem-icon-wrap warm">🌙</div>
+  <p class="lead">Right now, when something seems off with your pet, your only options are unhelpful forums or an expensive trip to a clinic that may not even be open. We're solving the two pain points every owner knows too well.</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="icon-tile" style="background: var(--accent-light);"><svg fill="none" stroke="#C45F1E" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
       <h3>Peace of mind at 2am</h3>
       <p>Something's off with your pet. It's late. Clinics are closed. Google gives 40 conflicting answers. You don't know if it's a wait-till-morning situation or an emergency. The anxiety is real — and you're alone with it.</p>
     </div>
-    <div class="problem-card">
-      <div class="problem-icon-wrap cool">💸</div>
+    <div class="card">
+      <div class="icon-tile" style="background: var(--primary-light);"><svg fill="none" stroke="#41644A" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
       <h3>Avoiding unnecessary vet trips</h3>
       <p>A clinic visit costs time, money, and stress — for you and your pet. Many situations don't need one. But owners have no way to tell without qualified guidance, so they either over-react or under-react. Both are bad.</p>
     </div>
   </div>
 
   <div class="promise">
-    <div class="promise-label">Our brand promise</div>
+    <div class="promise-eyebrow">Our brand promise</div>
     <p class="promise-quote">"You'll always know what to do next."</p>
     <p class="promise-sub">It's not a tagline — it's the north star every product decision and every vet interaction is built to deliver on.</p>
   </div>
 </section>
 
-<section class="section" id="how">
-  <div class="section-label">How it will work</div>
+<!-- How it works -->
+<section id="how">
+  <div class="eyebrow">How it will work</div>
   <h2 class="section-title">Real vets. Live video. Right now.</h2>
-  <p class="section-subtitle">A real, qualified person on video. A clear answer. A confident next step. No chatbots. No algorithms. No starting from scratch.</p>
-
-  <div class="steps-grid">
-    <div class="step-card">
+  <p class="lead">A real, qualified person on video. A clear answer. A confident next step. No chatbots. No algorithms. No starting from scratch.</p>
+  <div class="grid-3">
+    <div class="card card-hover step">
       <span class="step-num">01</span>
-      <span class="step-icon">📱</span>
+      <div class="icon-tile"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
       <h3>Book a video consult</h3>
       <p>Walk in for the next available slot, or schedule ahead. Our team has your pet's full history loaded before the call begins.</p>
     </div>
-    <div class="step-card">
+    <div class="card card-hover step">
       <span class="step-num">02</span>
-      <span class="step-icon">🎥</span>
+      <div class="icon-tile"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
       <h3>Get guided by a qualified pro</h3>
       <p>A vet professional reviews your pet over live video and gives a clear verdict: stay home with care instructions, book a clinic visit, or escalate.</p>
     </div>
-    <div class="step-card">
+    <div class="card card-hover step">
       <span class="step-num">03</span>
-      <span class="step-icon">🩺</span>
+      <div class="icon-tile"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 2v2M11 4a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V8a4 4 0 0 1 4-4z"/></svg></div>
       <h3>Escalate when clinically needed</h3>
       <p>If the case requires diagnosis or prescription, you're connected with an AVS-licensed vet doctor — no repeating yourself, no cold start.</p>
     </div>
   </div>
 </section>
 
-<section class="offer-section">
-  <div class="offer-inner">
-    <div class="section-label">Our services</div>
-    <h2 class="section-title">Two layers of care.<br>One seamless experience.</h2>
-    <p class="section-subtitle">Most platforms start with a doctor — expensive and intimidating. We start with guidance. Escalation happens only when the clinical picture requires it.</p>
-
-    <div class="offer-cards">
-      <div class="offer-card">
-        <div class="offer-tag">Basic Care</div>
+<!-- Two layers (dark) -->
+<div class="dark-section">
+  <div class="dark-inner">
+    <div class="eyebrow on-dark">Our services</div>
+    <h2 class="section-title on-dark">Two layers of care.<br>One seamless experience.</h2>
+    <p class="lead on-dark">Most platforms start with a doctor — expensive and intimidating. We start with guidance. Escalation happens only when the clinical picture requires it.</p>
+    <div class="grid-2">
+      <div class="layer-card">
+        <div class="layer-tag">Basic Care</div>
         <h3>Vet Professional Video Consult</h3>
-        <p>Live video triage with a qualified vet professional (nurse or tech). Ideal for the midnight scare, post-surgery worry, or "is this an emergency?" moment.</p>
-        <div class="offer-features">
-          <div class="offer-feature">Live video triage &amp; advice</div>
-          <div class="offer-feature">Discharge decoder &amp; medication guidance</div>
-          <div class="offer-feature">Appointment prep</div>
-          <div class="offer-feature">Emergency consult fee waived</div>
+        <p>Live video triage with a qualified vet professional (nurse or tech). Ideal for the midnight scare, post-surgery worry, or 'is this an emergency?' moment.</p>
+        <div class="features">
+          <div class="feature"><span class="tick">✓</span>Live video triage & advice</div>
+          <div class="feature"><span class="tick">✓</span>Discharge decoder & medication guidance</div>
+          <div class="feature"><span class="tick">✓</span>Appointment prep</div>
+          <div class="feature"><span class="tick">✓</span>Emergency consult fee waived</div>
         </div>
       </div>
-      <div class="offer-card">
-        <div class="offer-tag">Advanced Care</div>
+      <div class="layer-card">
+        <div class="layer-tag">Advanced Care</div>
         <h3>AVS Vet Doctor Video Consult</h3>
         <p>Full telemedicine session with a licensed AVS vet doctor — clinical assessment, diagnosis, prescription, and second opinions, with VCPR continuity from your existing vet.</p>
-        <div class="offer-features">
-          <div class="offer-feature">Live video with licensed vet doctor</div>
-          <div class="offer-feature">Clinical diagnosis &amp; treatment plan</div>
-          <div class="offer-feature">Prescriptions &amp; repeat prescriptions</div>
-          <div class="offer-feature">Second opinions &amp; chronic care support</div>
+        <div class="features">
+          <div class="feature"><span class="tick">✓</span>Live video with licensed vet doctor</div>
+          <div class="feature"><span class="tick">✓</span>Clinical diagnosis & treatment plan</div>
+          <div class="feature"><span class="tick">✓</span>Prescriptions & repeat prescriptions</div>
+          <div class="feature"><span class="tick">✓</span>Second opinions & chronic care support</div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="section">
-  <div class="section-label">Built for</div>
-  <h2 class="section-title" style="margin-bottom: 3.5rem; max-width: 720px;">Singapore pet parents who want clarity, not caveats.</h2>
-  <div class="audience-grid">
-    <div class="audience-card">
-      <div class="audience-emoji">🐶</div>
+<!-- Audience -->
+<section>
+  <div class="eyebrow">Built for</div>
+  <h2 class="section-title">Singapore pet parents who want clarity, not caveats.</h2>
+  <div class="grid-3">
+    <div class="card card-hover audience-card">
+      <div class="emoji">🐶</div>
       <div class="audience-age">25–38</div>
       <h3>Young professionals with pets</h3>
       <p>Busy schedules, first-time owners. Wants fast, confident answers without losing half a day to a clinic visit.</p>
     </div>
-    <div class="audience-card">
-      <div class="audience-emoji">🐱</div>
+    <div class="card card-hover audience-card">
+      <div class="emoji">🐱</div>
       <div class="audience-age">30–55</div>
       <h3>Experienced multi-pet households</h3>
       <p>Manages chronic conditions, exotics, or multiple pets. Wants second opinions and post-discharge support between vet visits.</p>
     </div>
-    <div class="audience-card">
-      <div class="audience-emoji">🩺</div>
+    <div class="card card-hover audience-card">
+      <div class="emoji">🩺</div>
       <div class="audience-age">B2B</div>
-      <h3>Vet professionals &amp; clinics</h3>
+      <h3>Vet professionals & clinics</h3>
       <p>Vet doctors, nurses, and clinics extending care remotely — flexible schedules, structured telehealth, no cold starts.</p>
     </div>
   </div>
 </section>
 
+<!-- FAQ -->
 <section class="faq-section">
-  <div class="section-label">FAQ</div>
-  <h2 class="section-title" style="margin-bottom: 2.5rem;">Common questions</h2>
-
-  <details class="faq-item"><summary class="faq-q">When is ConnectPaw launching?</summary><p class="faq-a">We're targeting MVP launch in August 2026. The product is actively being built right now. Join the waitlist to be notified first and secure early access.</p></details>
-  <details class="faq-item"><summary class="faq-q">What's the difference between Basic Care and Advanced Care?</summary><p class="faq-a">Basic Care is delivered by vet professionals (nurses or techs) via live video — they triage your pet's symptoms and tell you the next step. Advanced Care involves an AVS-licensed vet doctor via live video who can formally diagnose and prescribe — activated when Basic Care determines it's clinically necessary.</p></details>
-  <details class="faq-item"><summary class="faq-q">Is ConnectPaw legal in Singapore?</summary><p class="faq-a">Yes. ConnectPaw operates in full compliance with the AVS (Animal &amp; Veterinary Service) guidelines and the Vet Practice Bill. All consults are logged, vet credentials are verified, and we maintain clear boundaries between teleadvice/teletriage and telemedicine that requires a Veterinary-Client-Patient Relationship (VCPR).</p></details>
-  <details class="faq-item"><summary class="faq-q">Are consultations done by video or text?</summary><p class="faq-a">Live video — never text chat. Our vets need to actually see your pet to assess symptoms accurately. It's the closest thing to a clinic visit, without the drive.</p></details>
-  <details class="faq-item"><summary class="faq-q">What happens if my pet needs emergency care?</summary><p class="faq-a">If our vet professional determines your pet needs immediate physical emergency care, they'll direct you to the nearest emergency clinic right away — and your ConnectPaw consult fee is waived. Your pet's safety always comes first.</p></details>
-  <details class="faq-item"><summary class="faq-q">Will it replace my regular vet?</summary><p class="faq-a">No — we're complementary, not competitive. You can link your existing clinic vet to your ConnectPaw account to maintain continuity of care, especially for prescriptions and chronic conditions.</p></details>
-  <details class="faq-item"><summary class="faq-q">Do you offer plans for businesses, clinics, or insurers?</summary><p class="faq-a">Yes. We work with employers including pet healthcare in their benefits, vet clinics extending post-discharge support, and insurers exploring a white-label telehealth layer. Reach out via the form below.</p></details>
+  <div class="eyebrow">FAQ</div>
+  <h2 class="section-title" style="margin-bottom: 40px;">Common questions</h2>
+  <details><summary>When is ConnectPaw launching?<span class="plus">+</span></summary><p>We're targeting MVP launch in August 2026. The product is actively being built right now. Join the waitlist to be notified first and secure early access.</p></details>
+  <details><summary>What's the difference between Basic Care and Advanced Care?<span class="plus">+</span></summary><p>Basic Care is delivered by vet professionals (nurses or techs) via live video — they triage your pet's symptoms and tell you the next step. Advanced Care involves an AVS-licensed vet doctor via live video who can formally diagnose and prescribe — activated when Basic Care determines it's clinically necessary.</p></details>
+  <details><summary>Is ConnectPaw legal in Singapore?<span class="plus">+</span></summary><p>Yes. ConnectPaw operates in full compliance with the AVS (Animal & Veterinary Service) guidelines and the Vet Practice Bill. All consults are logged, vet credentials are verified, and we maintain clear boundaries between teleadvice/teletriage and telemedicine that requires a Veterinary-Client-Patient Relationship (VCPR).</p></details>
+  <details><summary>Are consultations done by video or text?<span class="plus">+</span></summary><p>Live video — never text chat. Our vets need to actually see your pet to assess symptoms accurately. It's the closest thing to a clinic visit, without the drive.</p></details>
+  <details><summary>What happens if my pet needs emergency care?<span class="plus">+</span></summary><p>If our vet professional determines your pet needs immediate physical emergency care, they'll direct you to the nearest emergency clinic right away — and your ConnectPaw consult fee is waived. Your pet's safety always comes first.</p></details>
+  <details><summary>Will it replace my regular vet?<span class="plus">+</span></summary><p>No — we're complementary, not competitive. You can link your existing clinic vet to your ConnectPaw account to maintain continuity of care, especially for prescriptions and chronic conditions.</p></details>
+  <details><summary>Do you offer plans for businesses, clinics, or insurers?<span class="plus">+</span></summary><p>Yes. We work with employers including pet healthcare in their benefits, vet clinics extending post-discharge support, and insurers exploring a white-label telehealth layer. Reach out via the form below.</p></details>
 </section>
 
-<section class="waitlist-section" id="waitlist">
+<!-- Waitlist -->
+<div class="waitlist-section" id="waitlist">
   <div class="waitlist-inner">
     <h2>Be first when we launch.</h2>
-    <p>Join our waitlist for early access when ConnectPaw goes live. Real vets. Live video. Guidance that actually helps — built right here in Singapore.</p>
+    <p class="desc">Join our waitlist for early access when ConnectPaw goes live. Real vets. Live video. Guidance that actually helps — built right here in Singapore.</p>
     <form class="waitlist-form" id="waitlist-form">
-      <input type="email" required placeholder="your@email.com" id="waitlist-email">
+      <input type="email" required placeholder="your@email.com">
       <button type="submit">Join Waitlist</button>
     </form>
-    <p class="waitlist-note">No spam. Just a heads-up when we launch. 🐾</p>
-    <div class="success-msg" id="waitlist-success">🎉 You're on the list! We'll reach out when ConnectPaw launches.</div>
+    <p class="waitlist-fine">No spam. Just a heads-up when we launch. 🐾</p>
+    <div class="success" id="waitlist-success">🎉 You're on the list! We'll reach out when ConnectPaw launches.</div>
   </div>
-</section>
+</div>
 
-<section class="vet-section">
+<!-- Vet recruitment -->
+<div class="vet-section">
   <div class="vet-inner">
     <div>
-      <div class="section-label">For vet professionals</div>
+      <div class="eyebrow">For vet professionals</div>
       <h2 class="section-title">Build this with us.</h2>
-      <p style="font-size: 1rem; color: var(--muted); line-height: 1.7;">We're recruiting AVS-licensed vet doctors, vet nurses, and vet technicians who want to deliver care remotely — on your schedule, on your terms. A first-of-its-kind structured telehealth role in Singapore.</p>
-      <div class="vet-perks">
-        <div class="vet-perk">
-          <div class="vet-perk-icon">📅</div>
-          <div class="vet-perk-text"><h4>Fully flexible scheduling</h4><p>Publish your availability windows. Take sessions when it suits you — no fixed hours, no shifts.</p></div>
+      <p class="lead" style="margin-bottom: 32px;">We're recruiting AVS-licensed vet doctors, vet nurses, and vet technicians who want to deliver care remotely — on your schedule, on your terms. A first-of-its-kind structured telehealth role in Singapore.</p>
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><h4>Fully flexible scheduling</h4><p>Publish your availability windows. Take sessions when it suits you — no fixed hours, no shifts.</p></div>
         </div>
-        <div class="vet-perk">
-          <div class="vet-perk-icon">💰</div>
-          <div class="vet-perk-text"><h4>Commission-based earnings</h4><p>Competitive commission per session completed. No hidden deductions, no salary cap.</p></div>
+        <div class="perk">
+          <div class="perk-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div><h4>Commission-based earnings</h4><p>Competitive commission per session completed. No hidden deductions, no salary cap.</p></div>
         </div>
-        <div class="vet-perk">
-          <div class="vet-perk-icon">🗂️</div>
-          <div class="vet-perk-text"><h4>Full patient history — no cold starts</h4><p>Every session begins with lifetime records loaded. 15-minute sessions are genuinely achievable.</p></div>
+        <div class="perk">
+          <div class="perk-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <div><h4>Full patient history — no cold starts</h4><p>Every session begins with lifetime records loaded. 15-minute sessions are genuinely achievable.</p></div>
         </div>
-        <div class="vet-perk">
-          <div class="vet-perk-icon">🚀</div>
-          <div class="vet-perk-text"><h4>Early-stage equity opportunity</h4><p>We're building this with our clinical team, not for them. Early professionals may qualify for equity.</p></div>
+        <div class="perk">
+          <div class="perk-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></div>
+          <div><h4>Early-stage equity opportunity</h4><p>We're building this with our clinical team, not for them. Early professionals may qualify for equity.</p></div>
         </div>
       </div>
     </div>
 
-    <div class="vet-cta-box">
-      <div class="vet-emoji">🩺</div>
+    <div class="vet-form-card">
+      <div class="icon">🩺</div>
       <h3>Express your interest</h3>
       <p>Tell us a bit about yourself and we'll be in touch before launch. All roles welcome.</p>
       <form class="vet-form" id="vet-form">
-        <input type="text" required placeholder="Full name">
-        <input type="email" required placeholder="Email address">
+        <input required placeholder="Full name">
+        <input required type="email" placeholder="Email address">
         <select required>
           <option value="" disabled selected>Your role</option>
           <option>AVS Licensed Vet Doctor</option>
@@ -703,34 +600,42 @@
         </select>
         <button type="submit">Express Interest →</button>
       </form>
-      <div class="success-msg" id="vet-success" style="background: var(--primary-light); color: var(--primary-dark); border-color: rgba(65,100,74,0.3);">✓ Thanks! We'll reach out to you before launch.</div>
+      <div class="success-sm" id="vet-success">✓ Thanks! We'll reach out to you before launch.</div>
     </div>
   </div>
-</section>
+</div>
 
+<!-- Footer -->
 <footer>
   <div class="footer-inner">
     <div>
-      <div class="footer-logo"><span class="connect">Connect</span><span class="paw">Paw</span></div>
-      <div class="footer-tagline">by TheMaplePaw Pte Ltd · Singapore · <a href="mailto:contact@themaplepaw.com">contact@themaplepaw.com</a></div>
+      <div class="footer-logo"><span class="a">Connect</span><span class="b">Paw</span></div>
+      <div class="footer-meta">by TheMaplePaw Pte Ltd · Singapore · <a href="mailto:contact@themaplepaw.com">contact@themaplepaw.com</a></div>
     </div>
-    <p class="footer-promise">"You'll always know what to do next."</p>
-    <div class="social-links">
-      <a href="#" class="social-link" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1c2.7 0 4.9 2.2 4.9 4.9s-2.2 4.9-4.9 4.9-4.9-2.2-4.9-4.9 2.2-4.9 4.9-4.9zm0 8.1c1.8 0 3.2-1.4 3.2-3.2s-1.4-3.2-3.2-3.2-3.2 1.4-3.2 3.2 1.4 3.2 3.2 3.2zm5.1-8.3c0 .6-.5 1.1-1.1 1.1s-1.1-.5-1.1-1.1.5-1.1 1.1-1.1 1.1.5 1.1 1.1z"/></svg></a>
-      <a href="#" class="social-link" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zM8.339 18.337v-8.49H5.667v8.49h2.672zM7.003 8.575a1.55 1.55 0 100-3.1 1.55 1.55 0 000 3.1zm11.335 9.762v-4.65c0-2.474-1.337-3.625-3.118-3.625-1.439 0-2.084.79-2.443 1.348v-1.158H10.1v8.49h2.677v-4.74c0-.252.018-.504.092-.685.202-.504.665-1.026 1.44-1.026 1.014 0 1.422.776 1.422 1.91v4.541h2.677z"/></svg></a>
-      <a href="#" class="social-link" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg></a>
+    <p class="footer-quote">"You'll always know what to do next."</p>
+    <div class="socials">
+      <a href="https://www.instagram.com/themaplepaw" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/company/themaplepaw-pte-ltd/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1DwebPpXBZ/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@themaplepaw" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.86a8.16 8.16 0 0 0 4.77 1.52V6.93a4.85 4.85 0 0 1-1.84-.24z"/></svg>
+      </a>
     </div>
-    <div class="footer-bottom">© 2026 TheMaplePaw Pte Ltd · Singapore · All rights reserved</div>
+    <div class="footer-copy">© 2026 TheMaplePaw Pte Ltd · Singapore · All rights reserved</div>
   </div>
 </footer>
 
 <script>
   document.getElementById('waitlist-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    if (document.getElementById('waitlist-email').value) {
-      document.getElementById('waitlist-success').classList.add('show');
-      this.reset();
-    }
+    document.getElementById('waitlist-success').classList.add('show');
+    this.reset();
   });
   document.getElementById('vet-form').addEventListener('submit', function(e) {
     e.preventDefault();
