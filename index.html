@@ -661,21 +661,29 @@
      SUPABASE INTEGRATION
      ============================================================ -->
 
-<!-- Supabase JS Client v2 (pinned to latest stable UMD build) -->
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Supabase JS Client v2 — pinned to v2.49.1 (last stable UMD build) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
 
 <script>
   // ---------------------------------------------------------------
   // 1. SUPABASE CONFIG
   // ---------------------------------------------------------------
-  const SUPABASE_URL = 'https://bbhebkytevsokgethfth.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_ICIjjdzNhdkFv44ijKh-rw_ouz0GQhA';
+  var SUPABASE_URL = 'https://bbhebkytevsokgethfth.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_ICIjjdzNhdkFv44ijKh-rw_ouz0GQhA';
 
-  // Safety check: ensure the Supabase library actually loaded
-  let db = null;
+  // Robust initialization: handle different UMD global shapes
+  var db = null;
   try {
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase client initialized successfully');
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+      // Newer versions: global `supabase` object with createClient
+      db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+      // Fallback: window.supabase
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+      console.error('Supabase library not found. Available globals:', Object.keys(window).filter(function(k) { return k.toLowerCase().indexOf('supa') > -1; }));
+    }
+    if (db) console.log('Supabase client initialized successfully');
   } catch (initErr) {
     console.error('Failed to initialize Supabase client:', initErr);
   }
