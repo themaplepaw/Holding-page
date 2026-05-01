@@ -574,7 +574,7 @@
   <div class="waitlist-inner">
     <h2>Be first when we launch.</h2>
     <p class="desc">Join our waitlist for early access when ConnectPaw goes live. Real vets. Live video. Guidance that actually helps — built right here in Singapore.</p>
-    <form class="waitlist-form" id="waitlist-form">
+    <form class="waitlist-form" id="waitlist-form" novalidate>
       <input type="email" id="waitlist-email" required placeholder="your@email.com" autocomplete="email">
       <button type="submit" id="waitlist-btn">Join Waitlist</button>
     </form>
@@ -614,15 +614,15 @@
       <div class="icon">🩺</div>
       <h3>Express your interest</h3>
       <p>Tell us a bit about yourself and we'll be in touch before launch. All roles welcome.</p>
-      <form class="vet-form" id="vet-form">
+      <form class="vet-form" id="vet-form" novalidate>
         <input required placeholder="Full name" id="vet-name">
         <input required type="email" placeholder="Email address" id="vet-email" autocomplete="email">
         <select required id="vet-role">
           <option value="" disabled selected>Your role</option>
-          <option>AVS Licensed Vet Doctor</option>
-          <option>Vet Nurse</option>
-          <option>Vet Technician</option>
-          <option>Other vet professional</option>
+          <option value="AVS Licensed Vet Doctor">AVS Licensed Vet Doctor</option>
+          <option value="Vet Nurse">Vet Nurse</option>
+          <option value="Vet Technician">Vet Technician</option>
+          <option value="Other vet professional">Other vet professional</option>
         </select>
         <button type="submit" id="vet-btn">Express Interest →</button>
       </form>
@@ -661,21 +661,30 @@
      SUPABASE INTEGRATION
      ============================================================ -->
 
-<!-- Supabase JS Client (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Supabase JS Client v2 (pinned to latest stable UMD build) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <script>
- 
-  const SUPABASE_URL = 'https://bbhebkytevsokgethfth.supabase.co';   
-  const SUPABASE_ANON_KEY = 'sb_publishable_ICIjjdzNhdkFv44ijKh-rw_ouz0GQhA';              
+  // ---------------------------------------------------------------
+  // 1. SUPABASE CONFIG
+  // ---------------------------------------------------------------
+  const SUPABASE_URL = 'https://bbhebkytevsokgethfth.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_ICIjjdzNhdkFv44ijKh-rw_ouz0GQhA';
 
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Safety check: ensure the Supabase library actually loaded
+  let db = null;
+  try {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Supabase client initialized successfully');
+  } catch (initErr) {
+    console.error('Failed to initialize Supabase client:', initErr);
+  }
 
   // ---------------------------------------------------------------
-  // 2. EMAIL VALIDATION (RFC 5322 simplified)
+  // 2. EMAIL VALIDATION
   // ---------------------------------------------------------------
   function isValidEmail(email) {
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+    var regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
     return regex.test(email.trim());
   }
 
@@ -683,7 +692,7 @@
   // 3. NAME VALIDATION
   // ---------------------------------------------------------------
   function isValidName(name) {
-    const trimmed = name.trim();
+    var trimmed = name.trim();
     return trimmed.length >= 2 && /^[a-zA-Z\s'\-\.]+$/.test(trimmed);
   }
 
@@ -717,18 +726,25 @@
   // ---------------------------------------------------------------
   // 5. PET PARENT WAITLIST FORM
   // ---------------------------------------------------------------
-  const waitlistForm = document.getElementById('waitlist-form');
-  const waitlistEmail = document.getElementById('waitlist-email');
-  const waitlistBtn = document.getElementById('waitlist-btn');
-  const waitlistMsg = document.getElementById('waitlist-msg');
+  var waitlistForm = document.getElementById('waitlist-form');
+  var waitlistEmail = document.getElementById('waitlist-email');
+  var waitlistBtn = document.getElementById('waitlist-btn');
+  var waitlistMsg = document.getElementById('waitlist-msg');
 
-  waitlistEmail.addEventListener('input', () => clearInputError(waitlistEmail));
+  waitlistEmail.addEventListener('input', function() { clearInputError(waitlistEmail); });
 
-  waitlistForm.addEventListener('submit', async function(e) {
+  waitlistForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     hideMsg(waitlistMsg);
 
-    const email = waitlistEmail.value.trim().toLowerCase();
+    // Check if Supabase loaded
+    if (!db) {
+      showMsg(waitlistMsg, 'Service temporarily unavailable. Please try again shortly.', 'error');
+      return;
+    }
+
+    var email = waitlistEmail.value.trim().toLowerCase();
 
     // Client-side validation
     if (!email) {
@@ -744,54 +760,66 @@
 
     setLoading(waitlistBtn, true);
 
-    try {
-      const { data, error } = await supabase
-        .from('waitlist_pet_parents')
-        .insert([{ email: email }]);
+    db.from('waitlist_pet_parents')
+      .insert([{ email: email }])
+      .then(function(result) {
+        var data = result.data;
+        var error = result.error;
 
-      if (error) {
-        if (error.code === '23505') {
-          showMsg(waitlistMsg, '🐾 You\'re already on the waitlist! We\'ll be in touch soon.', 'info');
+        console.log('Waitlist insert result:', { data: data, error: error });
+
+        if (error) {
+          if (error.code === '23505') {
+            showMsg(waitlistMsg, '🐾 You\'re already on the waitlist! We\'ll be in touch soon.', 'info');
+          } else {
+            console.error('Supabase error:', error);
+            showMsg(waitlistMsg, 'Something went wrong. Please try again in a moment.', 'error');
+          }
         } else {
-          console.error('Supabase error:', error);
-          showMsg(waitlistMsg, 'Something went wrong. Please try again in a moment.', 'error');
+          showMsg(waitlistMsg, '🎉 You\'re on the list! We\'ll reach out when ConnectPaw launches.', 'success');
+          waitlistForm.reset();
         }
-      } else {
-        showMsg(waitlistMsg, '🎉 You\'re on the list! We\'ll reach out when ConnectPaw launches.', 'success');
-        waitlistForm.reset();
-      }
-    } catch (err) {
-      console.error('Network error:', err);
-      showMsg(waitlistMsg, 'Network error — please check your connection and try again.', 'error');
-    } finally {
-      setLoading(waitlistBtn, false);
-    }
+
+        setLoading(waitlistBtn, false);
+      })
+      .catch(function(err) {
+        console.error('Network error:', err);
+        showMsg(waitlistMsg, 'Network error — please check your connection and try again.', 'error');
+        setLoading(waitlistBtn, false);
+      });
   });
 
   // ---------------------------------------------------------------
   // 6. VET PROFESSIONAL INTEREST FORM
   // ---------------------------------------------------------------
-  const vetForm = document.getElementById('vet-form');
-  const vetNameInput = document.getElementById('vet-name');
-  const vetEmailInput = document.getElementById('vet-email');
-  const vetRoleInput = document.getElementById('vet-role');
-  const vetBtn = document.getElementById('vet-btn');
-  const vetMsg = document.getElementById('vet-msg');
+  var vetForm = document.getElementById('vet-form');
+  var vetNameInput = document.getElementById('vet-name');
+  var vetEmailInput = document.getElementById('vet-email');
+  var vetRoleInput = document.getElementById('vet-role');
+  var vetBtn = document.getElementById('vet-btn');
+  var vetMsg = document.getElementById('vet-msg');
 
-  vetNameInput.addEventListener('input', () => clearInputError(vetNameInput));
-  vetEmailInput.addEventListener('input', () => clearInputError(vetEmailInput));
-  vetRoleInput.addEventListener('change', () => clearInputError(vetRoleInput));
+  vetNameInput.addEventListener('input', function() { clearInputError(vetNameInput); });
+  vetEmailInput.addEventListener('input', function() { clearInputError(vetEmailInput); });
+  vetRoleInput.addEventListener('change', function() { clearInputError(vetRoleInput); });
 
-  vetForm.addEventListener('submit', async function(e) {
+  vetForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     hideMsg(vetMsg);
 
-    const name = vetNameInput.value.trim();
-    const email = vetEmailInput.value.trim().toLowerCase();
-    const role = vetRoleInput.value;
+    // Check if Supabase loaded
+    if (!db) {
+      showMsg(vetMsg, 'Service temporarily unavailable. Please try again shortly.', 'error');
+      return;
+    }
+
+    var name = vetNameInput.value.trim();
+    var email = vetEmailInput.value.trim().toLowerCase();
+    var role = vetRoleInput.value;
 
     // Client-side validation
-    let hasError = false;
+    var hasError = false;
 
     if (!name || !isValidName(name)) {
       setInputError(vetNameInput);
@@ -819,28 +847,33 @@
 
     setLoading(vetBtn, true);
 
-    try {
-      const { data, error } = await supabase
-        .from('waitlist_vet_professionals')
-        .insert([{ full_name: name, email: email, role: role }]);
+    db.from('waitlist_vet_professionals')
+      .insert([{ full_name: name, email: email, role: role }])
+      .then(function(result) {
+        var data = result.data;
+        var error = result.error;
 
-      if (error) {
-        if (error.code === '23505') {
-          showMsg(vetMsg, '🩺 This email is already registered. We\'ll be in touch before launch!', 'info');
+        console.log('Vet insert result:', { data: data, error: error });
+
+        if (error) {
+          if (error.code === '23505') {
+            showMsg(vetMsg, '🩺 This email is already registered. We\'ll be in touch before launch!', 'info');
+          } else {
+            console.error('Supabase error:', error);
+            showMsg(vetMsg, 'Something went wrong. Please try again in a moment.', 'error');
+          }
         } else {
-          console.error('Supabase error:', error);
-          showMsg(vetMsg, 'Something went wrong. Please try again in a moment.', 'error');
+          showMsg(vetMsg, '✓ Thanks! We\'ll reach out to you before launch.', 'success');
+          vetForm.reset();
         }
-      } else {
-        showMsg(vetMsg, '✓ Thanks! We\'ll reach out to you before launch.', 'success');
-        vetForm.reset();
-      }
-    } catch (err) {
-      console.error('Network error:', err);
-      showMsg(vetMsg, 'Network error — please check your connection and try again.', 'error');
-    } finally {
-      setLoading(vetBtn, false);
-    }
+
+        setLoading(vetBtn, false);
+      })
+      .catch(function(err) {
+        console.error('Network error:', err);
+        showMsg(vetMsg, 'Network error — please check your connection and try again.', 'error');
+        setLoading(vetBtn, false);
+      });
   });
 </script>
 
